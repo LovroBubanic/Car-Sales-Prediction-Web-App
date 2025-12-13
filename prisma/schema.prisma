@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model CarBrand {
+  id            String           @id @default(cuid())
+  name          String           @unique
+  country       String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  historicalPrices HistoricalPrice[]
+  predictions   Prediction[]
+}
+
+model CarType {
+  id            String           @id @default(cuid())
+  name          String           @unique
+  description   String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  historicalPrices HistoricalPrice[]
+  predictions   Prediction[]
+}
+
+model HistoricalPrice {
+  id            String           @id @default(cuid())
+  brandId       String
+  typeId        String
+  year          Int
+  price         Float
+  source        String
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  
+  brand         CarBrand         @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  type          CarType          @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  
+  @@index([brandId, typeId, year])
+  @@unique([brandId, typeId, year, source])
+}
+
+model Prediction {
+  id            String           @id @default(cuid())
+  brandId       String
+  typeId        String
+  predictions   Json             // Array of YearPrediction objects
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  
+  brand         CarBrand         @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  type          CarType          @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  
+  @@index([brandId, typeId])
+}
+
