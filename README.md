@@ -228,7 +228,7 @@ npm run db:studio    # Open Prisma Studio
 
 ## License
 
-MIT License - feel free to use this project for learning or commercial purposes!
+Lovro Bubanic License - built to showcase my work!
 
 ---
 
