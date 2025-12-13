@@ -2,7 +2,7 @@
 
 A modern web application that uses AI to predict car prices for the next 5 years. Built with Next.js 15, React 19, and powered by OpenAI's GPT-4o-mini via Langchain.
 
-![Car Sales Preview](https://via.placeholder.com/800x400?text=Car+Sales+AI+Preview)
+Try it yourself: https://car-sales-prediction-web-app-workin.vercel.app/
 
 ## Features
 
