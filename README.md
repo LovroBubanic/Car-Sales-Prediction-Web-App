@@ -1,164 +1,136 @@
-# Car Sales - AI-Powered Price Predictions
+# Car Sales — AI-Powered Price Predictions
 
-A modern web application that uses AI to predict car prices for the next 5 years. Built with Next.js 15, React 19, and powered by OpenAI's GPT-4o-mini via Langchain.
+A full-stack web application that forecasts used and new vehicle prices over a five-year horizon. Users select a brand and body type; the backend combines historical market data with an LLM-driven analysis pipeline to return structured yearly projections, including confidence scores and depreciation rates.
 
-Try it yourself: https://car-sales-prediction-web-app-workin.vercel.app/
+**Live demo:** [car-sales-prediction-web-app-workin.vercel.app](https://car-sales-prediction-web-app-workin.vercel.app/)
 
-## Features
+---
 
-- 🤖 **AI-Powered Predictions** - Uses GPT-4o-mini for accurate price forecasting
-- 📊 **5-Year Forecasts** - Get detailed predictions for the next 5 years
-- 🎨 **Modern Dark UI** - Beautiful, responsive design with glass morphism effects
-- ⚡ **Fast & Serverless** - Optimized for Vercel Edge deployment
-- 🔒 **Type-Safe** - Built with TypeScript and Zod validation
-- 📱 **Responsive** - Works on desktop, tablet, and mobile
+## Overview
+
+Car Sales is built as a portfolio project demonstrating end-to-end product development: a responsive Next.js frontend, a typed API layer, optional PostgreSQL persistence via Prisma, and AI integration through LangChain and OpenAI. The application is designed for deployment on Vercel and runs without a database when only the prediction API is required.
+
+### Capabilities
+
+- **Five-year forecasts** — Year-by-year predicted prices with year-over-year change and depreciation metrics.
+- **AI-assisted analysis** — GPT-4o-mini processes historical context and market trends via LangChain prompts with schema-validated JSON output (Zod).
+- **Flexible data layer** — Historical prices from PostgreSQL when configured; otherwise mock seed data for demonstration.
+- **Interactive UI** — Brand and body-type selection, loading states, tabular results, and historical price visualization.
+- **Production-ready API** — REST endpoints for predictions and health checks, suitable for serverless deployment.
+
+---
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
-- **UI**: React 19, Tailwind CSS
-- **AI**: Langchain, OpenAI GPT-4o-mini
-- **Database**: PostgreSQL (optional, via Prisma)
-- **Deployment**: Vercel
+| Layer | Technologies |
+|-------|----------------|
+| **Framework** | [Next.js 15](https://nextjs.org/) (App Router) |
+| **Frontend** | [React 19](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), TypeScript |
+| **AI** | [LangChain](https://js.langchain.com/), [OpenAI GPT-4o-mini](https://platform.openai.com/) |
+| **Validation** | [Zod](https://zod.dev/) |
+| **Database** | [PostgreSQL](https://www.postgresql.org/) (optional), [Prisma](https://www.prisma.io/) |
+| **Deployment** | [Vercel](https://vercel.com/) |
 
-## Quick Start
+---
+
+## How It Works
+
+1. The user selects a **brand** (e.g. Toyota) and **body type** (e.g. SUV) in the web interface.
+2. The `/api/predict` route loads **historical price data** from the database or generated mock data.
+3. A **LangChain chain** formats the context and calls GPT-4o-mini with a structured prompt.
+4. The model response is **parsed and validated** against a defined schema.
+5. The client displays **predictions**, confidence levels, and optional historical charts.
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ 
-- OpenAI API Key ([Get one here](https://platform.openai.com/api-keys))
+- Node.js 18 or later
+- An [OpenAI API key](https://platform.openai.com/api-keys)
 
-### Local Development
+### Installation
 
-1. **Clone and install dependencies**
-   ```bash
-   git clone <your-repo>
-   cd frontend
-   npm install
-   ```
+```bash
+git clone <repository-url>
+cd car-sales
+npm install
+```
 
-2. **Set up environment variables**
-   
-   Create a `.env.local` file:
-   ```env
-   OPENAI_API_KEY=sk-your-openai-api-key-here
-   ```
+### Environment variables
 
-3. **Run the development server**
-   ```bash
-   npm run dev
-   ```
+Create `.env.local` in the project root:
 
-4. **Open the app**
-   
-   Visit [http://localhost:3000](http://localhost:3000)
-
-## Deploy to Vercel
-
-> 📖 **For detailed step-by-step instructions with real market data, see [VERCEL-SETUP.md](VERCEL-SETUP.md)**
-
-### One-Click Deploy
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/car-sales&env=OPENAI_API_KEY&envDescription=OpenAI%20API%20Key%20for%20AI%20predictions&project-name=car-sales&repository-name=car-sales)
-
-### Manual Deployment
-
-1. **Push to GitHub**
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git remote add origin https://github.com/YOUR_USERNAME/car-sales.git
-   git push -u origin main
-   ```
-
-2. **Connect to Vercel**
-   - Go to [vercel.com](https://vercel.com)
-   - Click "New Project"
-   - Import your GitHub repository
-   - Select the `frontend` folder as the root directory
-
-3. **Configure Environment Variables**
-   
-   In Vercel Dashboard → Settings → Environment Variables, add:
-   
-   | Variable | Value | Required |
-   |----------|-------|----------|
-   | `OPENAI_API_KEY` | Your OpenAI API key | ✅ Yes |
-   | `DATABASE_URL` | PostgreSQL connection string | ❌ Optional |
-   | `DIRECT_URL` | Direct PostgreSQL URL | ❌ Optional |
-
-4. **Deploy**
-   
-   Click "Deploy" and wait for the build to complete!
-
-### Adding a Database (Optional)
-
-For storing historical data and predictions:
-
-1. **Vercel Postgres** (Recommended)
-   - Go to your Vercel project → Storage → Create Database → Postgres
-   - Environment variables are automatically added
-
-2. **External PostgreSQL** (Supabase, Railway, etc.)
-   - Add `DATABASE_URL` and `DIRECT_URL` in Environment Variables
-   - Run `npx prisma db push` locally first to create tables
-
-## Environment Variables
+```env
+OPENAI_API_KEY=sk-your-openai-api-key
+```
 
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `OPENAI_API_KEY` | OpenAI API key for GPT-4o-mini | Yes |
-| `DATABASE_URL` | PostgreSQL connection (pooled) | No |
-| `DIRECT_URL` | PostgreSQL direct connection | No |
+| `DATABASE_URL` | PostgreSQL connection string (pooled) | No |
+| `DIRECT_URL` | PostgreSQL direct connection (migrations) | No |
 
-**Note**: Without a database, the app uses mock historical data but AI predictions still work!
+Without a database, the application uses mock historical data; AI predictions still function.
+
+### Run locally
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Other commands
+
+```bash
+npm run build        # Production build (includes Prisma generate)
+npm run start        # Start production server
+npm run lint         # ESLint
+npm run db:push      # Apply Prisma schema to database
+npm run db:studio    # Open Prisma Studio
+```
+
+---
 
 ## Project Structure
 
 ```
-frontend/
 ├── app/
 │   ├── api/
-│   │   └── predict/
-│   │       └── route.ts      # AI prediction API endpoint
-│   ├── globals.css           # Global styles
-│   ├── layout.tsx            # Root layout
-│   └── page.tsx              # Home page
+│   │   ├── predict/route.ts    # Prediction API
+│   │   └── seed/route.ts       # Database seeding (optional)
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
 ├── components/
-│   ├── CarInputForm.tsx      # Brand/type selection form
-│   ├── LoadingSpinner.tsx    # Loading animation
-│   └── PredictionTable.tsx   # Results display
+│   ├── icons/                  # SVG icons (brands, UI)
+│   ├── CarInputForm.tsx
+│   ├── LoadingSpinner.tsx
+│   └── PredictionTable.tsx
 ├── lib/
-│   ├── database/
-│   │   └── prisma.ts         # Prisma client
-│   └── langchain/
-│       ├── chains.ts         # Langchain prediction chain
-│       └── prompts.ts        # AI prompts
-├── prisma/
-│   └── schema.prisma         # Database schema
-├── types/
-│   └── index.ts              # TypeScript types
+│   ├── database/prisma.ts
+│   ├── langchain/
+│   │   ├── chains.ts
+│   │   └── prompts.ts
+│   └── seed-data.ts
+├── prisma/schema.prisma
+├── types/index.ts
 ├── package.json
-├── vercel.json               # Vercel configuration
-└── README.md
+└── vercel.json
 ```
 
-## How It Works
+---
 
-1. **User Selection**: User selects a car brand and type
-2. **Data Retrieval**: System fetches historical price data (from DB or generates mock data)
-3. **AI Analysis**: Langchain sends data to GPT-4o-mini with a specialized prompt
-4. **Structured Output**: AI returns predictions in a validated JSON format
-5. **Display**: Results shown with confidence scores and depreciation rates
+## API Reference
 
-## API Endpoints
+### `POST /api/predict`
 
-### POST `/api/predict`
+Generates a five-year price forecast for the given vehicle.
 
-Generates price predictions for a car.
+**Request body:**
 
-**Request:**
 ```json
 {
   "brand": "Toyota",
@@ -166,7 +138,8 @@ Generates price predictions for a car.
 }
 ```
 
-**Response:**
+**Response (excerpt):**
+
 ```json
 {
   "brand": "Toyota",
@@ -180,16 +153,15 @@ Generates price predictions for a car.
       "confidence": 85
     }
   ],
-  "historicalData": [...],
+  "historicalData": [],
   "source": "ai"
 }
 ```
 
-### GET `/api/predict`
+### `GET /api/predict`
 
-Health check endpoint.
+Health check for the prediction service.
 
-**Response:**
 ```json
 {
   "status": "ok",
@@ -199,38 +171,35 @@ Health check endpoint.
 }
 ```
 
-## Development Commands
+---
 
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run db:push      # Push Prisma schema to database
-npm run db:studio    # Open Prisma Studio
-```
+## Deployment
 
-## Troubleshooting
+Detailed Vercel setup (environment variables, optional Postgres, seeding) is documented in [VERCEL-SETUP.md](VERCEL-SETUP.md).
 
-### "AI predictions not working"
-- Check that `OPENAI_API_KEY` is set correctly
-- Ensure your OpenAI account has credits
-- Check Vercel function logs for errors
+**Summary:**
 
-### "Database connection failed"
-- Verify `DATABASE_URL` format
-- For Vercel Postgres, ensure the integration is properly connected
-- Check if tables exist (run `npm run db:push`)
-
-### "Build fails on Vercel"
-- Ensure `prisma generate` runs during build (already configured)
-- Check that all dependencies are in `package.json`
-
-## License
-
-Lovro Bubanic License - built to showcase my work!
+1. Push the repository to GitHub.
+2. Import the project in the [Vercel dashboard](https://vercel.com/new) (repository root as the project directory).
+3. Set `OPENAI_API_KEY` under **Settings → Environment Variables**.
+4. Deploy. Optionally add Vercel Postgres or an external database and configure `DATABASE_URL` / `DIRECT_URL`.
 
 ---
 
-Built with ❤️ using Next.js, Langchain, and OpenAI
+## Troubleshooting
 
+| Issue | What to check |
+|-------|----------------|
+| Predictions fail | `OPENAI_API_KEY` is set; account has available credits; Vercel function logs |
+| Database errors | `DATABASE_URL` format; Prisma schema applied (`npm run db:push`) |
+| Build fails | Dependencies installed; `prisma generate` runs (included in `npm run build`) |
+
+---
+
+## License
+
+This project is provided for portfolio and demonstration purposes. See repository terms or contact the author for reuse permissions.
+
+---
+
+*Car Sales — Next.js, LangChain, OpenAI*
