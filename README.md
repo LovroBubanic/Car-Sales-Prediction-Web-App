@@ -13,7 +13,7 @@ Car Sales is built as a portfolio project demonstrating end-to-end product devel
 ### Capabilities
 
 - **Five-year forecasts** — Year-by-year predicted prices with year-over-year change and depreciation metrics.
-- **AI-assisted analysis** — GPT-4o-mini processes historical context and market trends via LangChain prompts with schema-validated JSON output (Zod).
+- **AI-assisted analysis** — GPT-6 Luna processes historical context and market trends via LangChain prompts with schema-validated JSON output (Zod).
 - **Flexible data layer** — Historical prices from PostgreSQL when configured; otherwise mock seed data for demonstration.
 - **Interactive UI** — Brand and body-type selection, loading states, tabular results, and historical price visualization.
 - **Production-ready API** — REST endpoints for predictions and health checks, suitable for serverless deployment.
@@ -26,7 +26,7 @@ Car Sales is built as a portfolio project demonstrating end-to-end product devel
 |-------|----------------|
 | **Framework** | [Next.js 15](https://nextjs.org/) (App Router) |
 | **Frontend** | [React 19](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), TypeScript |
-| **AI** | [LangChain](https://js.langchain.com/), [OpenAI GPT-4o-mini](https://platform.openai.com/) |
+| **AI** | [LangChain](https://js.langchain.com/), [OpenAI GPT-6 Luna](https://platform.openai.com/) |
 | **Validation** | [Zod](https://zod.dev/) |
 | **Database** | [PostgreSQL](https://www.postgresql.org/) (optional), [Prisma](https://www.prisma.io/) |
 | **Deployment** | [Vercel](https://vercel.com/) |
@@ -37,7 +37,7 @@ Car Sales is built as a portfolio project demonstrating end-to-end product devel
 
 1. The user selects a **brand** (e.g. Toyota) and **body type** (e.g. SUV) in the web interface.
 2. The `/api/predict` route loads **historical price data** from the database or generated mock data.
-3. A **LangChain chain** formats the context and calls GPT-4o-mini with a structured prompt.
+3. A **LangChain chain** formats the context and calls GPT-6 Luna with a structured prompt.
 4. The model response is **parsed and validated** against a defined schema.
 5. The client displays **predictions**, confidence levels, and optional historical charts.
 
@@ -68,7 +68,7 @@ OPENAI_API_KEY=sk-your-openai-api-key
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `OPENAI_API_KEY` | OpenAI API key for GPT-4o-mini | Yes |
+| `OPENAI_API_KEY` | OpenAI API key for GPT-6 Luna | Yes |
 | `DATABASE_URL` | PostgreSQL connection string (pooled) | No |
 | `DIRECT_URL` | PostgreSQL direct connection (migrations) | No |
 

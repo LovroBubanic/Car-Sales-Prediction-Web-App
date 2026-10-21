@@ -183,7 +183,7 @@ Check the API response includes `"source": "ai"` to confirm AI is working.
 Your Car Sales app is now running on Vercel with:
 - ✅ Real market price data (2019-2024)
 - ✅ PostgreSQL database (Vercel Postgres)
-- ✅ AI predictions (OpenAI GPT-4o-mini)
+- ✅ AI predictions (OpenAI GPT-6 Luna)
 - ✅ Serverless architecture (auto-scaling)
 
 ---

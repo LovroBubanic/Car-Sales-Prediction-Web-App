@@ -21,9 +21,12 @@ export async function createPredictionChain(
   carType: string
 ) {
   const model = new ChatOpenAI({
-    modelName: 'gpt-4o-mini',
+    modelName: 'gpt-6-luna',
     temperature: 0.3,
     openAIApiKey: process.env.OPENAI_API_KEY,
+    // gpt-6-luna defaults to medium reasoning; disable it for fast, cheap structured output.
+    // Passed via modelKwargs because @langchain/openai 0.6 doesn't recognize gpt-6 as a reasoning model.
+    modelKwargs: { reasoning_effort: 'none' },
   }).withStructuredOutput(PredictionSchema, {
     name: 'car_price_predictions',
   });
